@@ -10,9 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.JPanel;
 
-public class PaintPanel extends JPanel {
+public class PaintPanel extends JPanel  {
 
     private final List<PaintShape> paintShapes = new ArrayList<>();
 
@@ -25,12 +26,14 @@ public class PaintPanel extends JPanel {
     public List<PaintShape> getPaintShapes() {
         return paintShapes;
     }
-    
-    public void acceptPaintShapes(List<PaintShape> acceptedPaintShapes){
+
+
+    public void acceptPaintShapes(List<PaintShape> acceptedPaintShapes) {
         paintShapes.clear();
         paintShapes.addAll(acceptedPaintShapes);
         repaint();
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {

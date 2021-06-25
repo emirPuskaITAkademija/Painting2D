@@ -1,22 +1,26 @@
 package ba.paint.nasa.app.listener;
 
-import ba.paint.nasa.app.layout.PaintWindow;
 import ba.paint.nasa.app.xml.parser.XMLPictureParser;
-import ba.paint.nasa.app.xml.parser.sax.SAXPictureParser;
 import ba.paint.nasa.app.xml.shape.PaintShape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Supplier;
 import javax.swing.JOptionPane;
-
+/**
+ * Rezultat slikanja na PainPanelu je šta ????
+ * 
+ * <li> List<PaintShape> paintShapes....
+ * <li> XMLPictureParser -> read, write   -> XML
+ * 
+ * 
+ * @author Grupa1
+ */
 public class SaveListener implements ActionListener {
     
     //NFS
     public static final String PICTURE_EXTENSION = ".nfs";
 
-    //TIGHT COUPLED LOGIC
-    //LOOSED COUPLED LOGIC 
     private final XMLPictureParser xmlPictureParser;
     private final Supplier<List<PaintShape>> shapesSupplier;
 

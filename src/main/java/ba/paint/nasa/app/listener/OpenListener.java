@@ -7,16 +7,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.swing.JOptionPane;
 
 
 public class OpenListener implements ActionListener{
 
-    private final XMLPictureParser pictureParser;
+    private final Supplier<XMLPictureParser> pictureParserSupplier;
     private final Consumer<List<PaintShape>> shapesConsumer;
 
-    public OpenListener(XMLPictureParser pictureParser,Consumer<List<PaintShape>> shapesConsumer) {
-        this.pictureParser = pictureParser;
+    public OpenListener(Supplier<XMLPictureParser> pictureParser,Consumer<List<PaintShape>> shapesConsumer) {
+        this.pictureParserSupplier = pictureParser;
         this.shapesConsumer = shapesConsumer;
     }
     
@@ -31,7 +32,7 @@ public class OpenListener implements ActionListener{
         if(!pictureName.endsWith(PICTURE_EXTENSION)){
             pictureName+=PICTURE_EXTENSION;
         }
-        List<PaintShape> paintShapes = pictureParser.readPicture(pictureName);
+        List<PaintShape> paintShapes = pictureParserSupplier.get().readPicture(pictureName);
         shapesConsumer.accept(paintShapes);
     }
     

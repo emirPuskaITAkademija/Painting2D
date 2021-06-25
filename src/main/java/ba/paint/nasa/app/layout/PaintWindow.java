@@ -3,7 +3,9 @@ package ba.paint.nasa.app.layout;
 import ba.paint.nasa.app.listener.ExitListener;
 import ba.paint.nasa.app.listener.OpenListener;
 import ba.paint.nasa.app.listener.SaveListener;
+import ba.paint.nasa.app.xml.parser.dom.DOMPictureParser;
 import ba.paint.nasa.app.xml.parser.sax.SAXPictureParser;
+import ba.paint.nasa.app.xml.parser.stax.StaxPictureParser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -27,11 +29,26 @@ public class PaintWindow extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Fajl");
         fileMenu.setMnemonic('F');
-        fileMenu.add(createMenuItem("Snimi", 'S', new SaveListener(new SAXPictureParser(), paintPanel::getPaintShapes)));
-        fileMenu.add(createMenuItem("Otvori", 'O', new OpenListener(new SAXPictureParser(), paintPanel::acceptPaintShapes)));
+        JMenu saveMenu = new JMenu("Snimi sa");
+        saveMenu.add(createMenuItem("SAX parserom", 'S', new SaveListener(new SAXPictureParser(this::refreshAfterSave), paintPanel::getPaintShapes)));
+        saveMenu.add(createMenuItem("DOM parserom", 'D', new SaveListener(new DOMPictureParser(this::refreshAfterSave), paintPanel::getPaintShapes)));
+        saveMenu.add(createMenuItem("STAX parserom", 'T', new SaveListener(new StaxPictureParser(this::refreshAfterSave), paintPanel::getPaintShapes)));
+        fileMenu.add(saveMenu);
+
+        JMenu openMenu = new JMenu("Otvori sa");
+        openMenu.add(createMenuItem("SAX parserom", 'S', new OpenListener(SAXPictureParser::new, paintPanel::acceptPaintShapes)));
+        openMenu.add(createMenuItem("DOM parserom", 'D', new OpenListener(DOMPictureParser::new, paintPanel::acceptPaintShapes)));
+        openMenu.add(createMenuItem("STAX parserom", 'T', new OpenListener(StaxPictureParser::new, paintPanel::acceptPaintShapes)));
+        fileMenu.add(openMenu);
+
         fileMenu.add(createMenuItem("Izlaz", 'I', new ExitListener()));
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
+    }
+
+    private void refreshAfterSave() {
+        paintPanel.getPaintShapes().clear();
+        paintPanel.repaint();
     }
 
     private JMenuItem createMenuItem(String label, int mnemonic, ActionListener actionListener) {
